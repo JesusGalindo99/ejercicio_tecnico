@@ -1,0 +1,54 @@
+-- Usar la base de datos creado en python
+USE prueba_netflixdatasql;
+GO
+
+
+CREATE TABLE Shows (
+    show_id INT PRIMARY KEY,
+    title NVARCHAR(255),
+    type NVARCHAR(50),
+    release_year INT,
+    rating NVARCHAR(10),
+    duration NVARCHAR(20)
+);
+GO
+
+
+CREATE TABLE People (
+    person_id INT PRIMARY KEY,
+    name NVARCHAR(100),
+    birthdate DATE,
+    country NVARCHAR(100)
+);
+GO
+
+
+CREATE TABLE UserRatings (
+    rating_id INT PRIMARY KEY,
+    user_id INT,
+    show_id INT,
+    rating INT,
+    FOREIGN KEY (user_id) REFERENCES People (person_id),
+    FOREIGN KEY (show_id) REFERENCES Shows (show_id)
+);
+GO
+
+CREATE TABLE Genres (
+    genre_id INT PRIMARY KEY,
+    genre_name NVARCHAR(50)
+);
+GO
+
+ALTER TABLE Shows
+ADD genre_id INT;
+
+
+CREATE TABLE ShowGenres (
+    show_id INT,
+    genre_id INT,
+    PRIMARY KEY (show_id, genre_id),
+    FOREIGN KEY (show_id) REFERENCES Shows (show_id),
+    FOREIGN KEY (genre_id) REFERENCES Genres (genre_id)
+);
+SELECT *
+FROM INFORMATION_SCHEMA.TABLES
