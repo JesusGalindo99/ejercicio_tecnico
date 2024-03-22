@@ -1,0 +1,479 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "id": "79852c88-a0e8-4455-a992-d9a7fdc010dd",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import pandas as pd"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "id": "ae423495-937d-4c57-9a20-f8c23a43f68e",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>show_id</th>\n",
+       "      <th>type</th>\n",
+       "      <th>title</th>\n",
+       "      <th>director</th>\n",
+       "      <th>cast</th>\n",
+       "      <th>country</th>\n",
+       "      <th>date_added</th>\n",
+       "      <th>release_year</th>\n",
+       "      <th>rating</th>\n",
+       "      <th>duration</th>\n",
+       "      <th>listed_in</th>\n",
+       "      <th>description</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>s1</td>\n",
+       "      <td>Movie</td>\n",
+       "      <td>Dick Johnson Is Dead</td>\n",
+       "      <td>Kirsten Johnson</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>United States</td>\n",
+       "      <td>September 25, 2021</td>\n",
+       "      <td>2020</td>\n",
+       "      <td>PG-13</td>\n",
+       "      <td>90 min</td>\n",
+       "      <td>Documentaries</td>\n",
+       "      <td>As her father nears the end of his life, filmm...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>s2</td>\n",
+       "      <td>TV Show</td>\n",
+       "      <td>Blood &amp; Water</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>Ama Qamata, Khosi Ngema, Gail Mabalane, Thaban...</td>\n",
+       "      <td>South Africa</td>\n",
+       "      <td>September 24, 2021</td>\n",
+       "      <td>2021</td>\n",
+       "      <td>TV-MA</td>\n",
+       "      <td>2 Seasons</td>\n",
+       "      <td>International TV Shows, TV Dramas, TV Mysteries</td>\n",
+       "      <td>After crossing paths at a party, a Cape Town t...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>s3</td>\n",
+       "      <td>TV Show</td>\n",
+       "      <td>Ganglands</td>\n",
+       "      <td>Julien Leclercq</td>\n",
+       "      <td>Sami Bouajila, Tracy Gotoas, Samuel Jouy, Nabi...</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>September 24, 2021</td>\n",
+       "      <td>2021</td>\n",
+       "      <td>TV-MA</td>\n",
+       "      <td>1 Season</td>\n",
+       "      <td>Crime TV Shows, International TV Shows, TV Act...</td>\n",
+       "      <td>To protect his family from a powerful drug lor...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>s4</td>\n",
+       "      <td>TV Show</td>\n",
+       "      <td>Jailbirds New Orleans</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>September 24, 2021</td>\n",
+       "      <td>2021</td>\n",
+       "      <td>TV-MA</td>\n",
+       "      <td>1 Season</td>\n",
+       "      <td>Docuseries, Reality TV</td>\n",
+       "      <td>Feuds, flirtations and toilet talk go down amo...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>s5</td>\n",
+       "      <td>TV Show</td>\n",
+       "      <td>Kota Factory</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>Mayur More, Jitendra Kumar, Ranjan Raj, Alam K...</td>\n",
+       "      <td>India</td>\n",
+       "      <td>September 24, 2021</td>\n",
+       "      <td>2021</td>\n",
+       "      <td>TV-MA</td>\n",
+       "      <td>2 Seasons</td>\n",
+       "      <td>International TV Shows, Romantic TV Shows, TV ...</td>\n",
+       "      <td>In a city of coaching centers known to train I...</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "  show_id     type                  title         director  \\\n",
+       "0      s1    Movie   Dick Johnson Is Dead  Kirsten Johnson   \n",
+       "1      s2  TV Show          Blood & Water              NaN   \n",
+       "2      s3  TV Show              Ganglands  Julien Leclercq   \n",
+       "3      s4  TV Show  Jailbirds New Orleans              NaN   \n",
+       "4      s5  TV Show           Kota Factory              NaN   \n",
+       "\n",
+       "                                                cast        country  \\\n",
+       "0                                                NaN  United States   \n",
+       "1  Ama Qamata, Khosi Ngema, Gail Mabalane, Thaban...   South Africa   \n",
+       "2  Sami Bouajila, Tracy Gotoas, Samuel Jouy, Nabi...            NaN   \n",
+       "3                                                NaN            NaN   \n",
+       "4  Mayur More, Jitendra Kumar, Ranjan Raj, Alam K...          India   \n",
+       "\n",
+       "           date_added  release_year rating   duration  \\\n",
+       "0  September 25, 2021          2020  PG-13     90 min   \n",
+       "1  September 24, 2021          2021  TV-MA  2 Seasons   \n",
+       "2  September 24, 2021          2021  TV-MA   1 Season   \n",
+       "3  September 24, 2021          2021  TV-MA   1 Season   \n",
+       "4  September 24, 2021          2021  TV-MA  2 Seasons   \n",
+       "\n",
+       "                                           listed_in  \\\n",
+       "0                                      Documentaries   \n",
+       "1    International TV Shows, TV Dramas, TV Mysteries   \n",
+       "2  Crime TV Shows, International TV Shows, TV Act...   \n",
+       "3                             Docuseries, Reality TV   \n",
+       "4  International TV Shows, Romantic TV Shows, TV ...   \n",
+       "\n",
+       "                                         description  \n",
+       "0  As her father nears the end of his life, filmm...  \n",
+       "1  After crossing paths at a party, a Cape Town t...  \n",
+       "2  To protect his family from a powerful drug lor...  \n",
+       "3  Feuds, flirtations and toilet talk go down amo...  \n",
+       "4  In a city of coaching centers known to train I...  "
+      ]
+     },
+     "execution_count": 9,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "netflix_data = pd.read_csv('/Users/User/Desktop/Ejercicio Delfosti/netflix_titles.csv')\n",
+    "netflix_data.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 19,
+   "id": "39195b7a-c7a4-4e33-8e50-b2b29a8a643c",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Valores nulos por columna:\n",
+      "show_id            0\n",
+      "type               0\n",
+      "title              0\n",
+      "director        2634\n",
+      "cast             825\n",
+      "country          831\n",
+      "date_added        10\n",
+      "release_year       0\n",
+      "rating             4\n",
+      "duration           3\n",
+      "listed_in          0\n",
+      "description        0\n",
+      "dtype: int64\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(\"Valores nulos por columna:\")\n",
+    "print(netflix_data.isnull().sum())"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 22,
+   "id": "59ff0936-67d6-4ed6-b067-1303fe197b9c",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "netflix_data['director'] = netflix_data['director'].fillna(\"Desconocido\")\n",
+    "netflix_data['cast'] = netflix_data['cast'].fillna(\"Desconocido\")\n",
+    "netflix_data['country'] = netflix_data['country'].fillna(\"Desconocido\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 23,
+   "id": "977d5d95-93c2-497d-ad7e-ae62015bc924",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "netflix_data.dropna(subset=['date_added', 'rating', 'duration'], inplace=True)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 24,
+   "id": "eb77ac4e-29ce-4478-a37d-36136659c29e",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "actors = pd.DataFrame({'actor': netflix_data['cast'].str.split(', ', expand=True).stack().unique()})"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 25,
+   "id": "e365f11e-8053-479b-9f37-d3e4a5183c37",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "actors.reset_index(drop=True, inplace=True)\n",
+    "actors.reset_index(inplace=True)\n",
+    "actors.rename(columns={'index': 'actor_id'}, inplace=True)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 26,
+   "id": "1e617943-2f46-4d4f-8b61-74d75d50a6f0",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "movie_actor_relation = netflix_data[['show_id', 'cast']].copy()\n",
+    "movie_actor_relation['cast'] = movie_actor_relation['cast'].str.split(', ')\n",
+    "movie_actor_relation = movie_actor_relation.explode('cast')\n",
+    "movie_actor_relation = movie_actor_relation.merge(actors, left_on='cast', right_on='actor', how='left')\n",
+    "movie_actor_relation.drop(columns=['cast', 'actor'], inplace=True)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 33,
+   "id": "bf6b49ae-4ce4-47ce-adca-dd8229ae6253",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "netflix_data.to_csv('netflix_data_clean.csv', index=False)\n",
+    "actors.to_csv('actors.csv', index=False)\n",
+    "netflix_data.to_csv('/Users/User/Desktop/Ejercicio Delfosti/netflix_data.csv', index=False)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 28,
+   "id": "27ce31d3-2104-4c02-9cb6-d096994c309c",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "show_id         0\n",
+      "type            0\n",
+      "title           0\n",
+      "director        0\n",
+      "cast            0\n",
+      "country         0\n",
+      "date_added      0\n",
+      "release_year    0\n",
+      "rating          0\n",
+      "duration        0\n",
+      "listed_in       0\n",
+      "description     0\n",
+      "dtype: int64\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(netflix_data.isnull().sum())"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 29,
+   "id": "d1b5ce7c-670b-4a6f-9204-be39b2f620f5",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "  show_id     type                  title         director  \\\n",
+      "0      s1    Movie   Dick Johnson Is Dead  Kirsten Johnson   \n",
+      "1      s2  TV Show          Blood & Water      Desconocido   \n",
+      "2      s3  TV Show              Ganglands  Julien Leclercq   \n",
+      "3      s4  TV Show  Jailbirds New Orleans      Desconocido   \n",
+      "4      s5  TV Show           Kota Factory      Desconocido   \n",
+      "\n",
+      "                                                cast        country  \\\n",
+      "0                                        Desconocido  United States   \n",
+      "1  Ama Qamata, Khosi Ngema, Gail Mabalane, Thaban...   South Africa   \n",
+      "2  Sami Bouajila, Tracy Gotoas, Samuel Jouy, Nabi...    Desconocido   \n",
+      "3                                        Desconocido    Desconocido   \n",
+      "4  Mayur More, Jitendra Kumar, Ranjan Raj, Alam K...          India   \n",
+      "\n",
+      "           date_added  release_year rating   duration  \\\n",
+      "0  September 25, 2021          2020  PG-13     90 min   \n",
+      "1  September 24, 2021          2021  TV-MA  2 Seasons   \n",
+      "2  September 24, 2021          2021  TV-MA   1 Season   \n",
+      "3  September 24, 2021          2021  TV-MA   1 Season   \n",
+      "4  September 24, 2021          2021  TV-MA  2 Seasons   \n",
+      "\n",
+      "                                           listed_in  \\\n",
+      "0                                      Documentaries   \n",
+      "1    International TV Shows, TV Dramas, TV Mysteries   \n",
+      "2  Crime TV Shows, International TV Shows, TV Act...   \n",
+      "3                             Docuseries, Reality TV   \n",
+      "4  International TV Shows, Romantic TV Shows, TV ...   \n",
+      "\n",
+      "                                         description  \n",
+      "0  As her father nears the end of his life, filmm...  \n",
+      "1  After crossing paths at a party, a Cape Town t...  \n",
+      "2  To protect his family from a powerful drug lor...  \n",
+      "3  Feuds, flirtations and toilet talk go down amo...  \n",
+      "4  In a city of coaching centers known to train I...  \n"
+     ]
+    }
+   ],
+   "source": [
+    "print(netflix_data.head())"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 30,
+   "id": "8d90e303-6ff6-44e6-94a8-dff2f06f1c79",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "   actor_id           actor\n",
+      "0         0     Desconocido\n",
+      "1         1      Ama Qamata\n",
+      "2         2     Khosi Ngema\n",
+      "3         3   Gail Mabalane\n",
+      "4         4  Thabang Molaba\n",
+      "  show_id  actor_id\n",
+      "0      s1         0\n",
+      "1      s2         1\n",
+      "2      s2         2\n",
+      "3      s2         3\n",
+      "4      s2         4\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(actors.head())\n",
+    "print(movie_actor_relation.head())"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "id": "b05a21ce-ddd3-49ae-8f93-92b69a4f7b87",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Collecting pandas\n",
+      "  Downloading pandas-2.2.1-cp312-cp312-win_amd64.whl.metadata (19 kB)\n",
+      "Collecting numpy<2,>=1.26.0 (from pandas)\n",
+      "  Downloading numpy-1.26.4-cp312-cp312-win_amd64.whl.metadata (61 kB)\n",
+      "     ---------------------------------------- 0.0/61.0 kB ? eta -:--:--\n",
+      "     ------ --------------------------------- 10.2/61.0 kB ? eta -:--:--\n",
+      "     ------------------------- ------------ 41.0/61.0 kB 487.6 kB/s eta 0:00:01\n",
+      "     -------------------------------------- 61.0/61.0 kB 461.8 kB/s eta 0:00:00\n",
+      "Requirement already satisfied: python-dateutil>=2.8.2 in c:\\users\\user\\anaconda3\\envs\\prueba\\lib\\site-packages (from pandas) (2.8.2)\n",
+      "Requirement already satisfied: pytz>=2020.1 in c:\\users\\user\\anaconda3\\envs\\prueba\\lib\\site-packages (from pandas) (2023.3.post1)\n",
+      "Collecting tzdata>=2022.7 (from pandas)\n",
+      "  Downloading tzdata-2024.1-py2.py3-none-any.whl.metadata (1.4 kB)\n",
+      "Requirement already satisfied: six>=1.5 in c:\\users\\user\\anaconda3\\envs\\prueba\\lib\\site-packages (from python-dateutil>=2.8.2->pandas) (1.16.0)\n",
+      "Downloading pandas-2.2.1-cp312-cp312-win_amd64.whl (11.5 MB)\n",
+      "   ---------------------------------------- 0.0/11.5 MB ? eta -:--:--\n",
+      "   ----- ---------------------------------- 1.5/11.5 MB 31.6 MB/s eta 0:00:01\n",
+      "   ------------------ --------------------- 5.4/11.5 MB 57.0 MB/s eta 0:00:01\n",
+      "   ---------------------- ----------------- 6.4/11.5 MB 45.2 MB/s eta 0:00:01\n",
+      "   -------------------------- ------------- 7.5/11.5 MB 39.7 MB/s eta 0:00:01\n",
+      "   ------------------------------- -------- 8.9/11.5 MB 38.0 MB/s eta 0:00:01\n",
+      "   ----------------------------------- ---- 10.1/11.5 MB 35.8 MB/s eta 0:00:01\n",
+      "   ---------------------------------------  11.3/11.5 MB 34.6 MB/s eta 0:00:01\n",
+      "   ---------------------------------------  11.5/11.5 MB 36.4 MB/s eta 0:00:01\n",
+      "   ---------------------------------------- 11.5/11.5 MB 29.7 MB/s eta 0:00:00\n",
+      "Downloading numpy-1.26.4-cp312-cp312-win_amd64.whl (15.5 MB)\n",
+      "   ---------------------------------------- 0.0/15.5 MB ? eta -:--:--\n",
+      "   --- ------------------------------------ 1.5/15.5 MB 33.4 MB/s eta 0:00:01\n",
+      "   -------- ------------------------------- 3.5/15.5 MB 37.3 MB/s eta 0:00:01\n",
+      "   -------------- ------------------------- 5.5/15.5 MB 44.2 MB/s eta 0:00:01\n",
+      "   ---------------- ----------------------- 6.5/15.5 MB 34.8 MB/s eta 0:00:01\n",
+      "   ------------------- -------------------- 7.7/15.5 MB 35.5 MB/s eta 0:00:01\n",
+      "   ----------------------- ---------------- 9.1/15.5 MB 32.4 MB/s eta 0:00:01\n",
+      "   ------------------------- -------------- 10.1/15.5 MB 32.3 MB/s eta 0:00:01\n",
+      "   ----------------------------- ---------- 11.5/15.5 MB 31.2 MB/s eta 0:00:01\n",
+      "   -------------------------------- ------- 12.8/15.5 MB 28.5 MB/s eta 0:00:01\n",
+      "   ----------------------------------- ---- 13.8/15.5 MB 27.3 MB/s eta 0:00:01\n",
+      "   ---------------------------------------  15.1/15.5 MB 27.3 MB/s eta 0:00:01\n",
+      "   ---------------------------------------  15.5/15.5 MB 26.2 MB/s eta 0:00:01\n",
+      "   ---------------------------------------  15.5/15.5 MB 26.2 MB/s eta 0:00:01\n",
+      "   ---------------------------------------- 15.5/15.5 MB 19.9 MB/s eta 0:00:00\n",
+      "Downloading tzdata-2024.1-py2.py3-none-any.whl (345 kB)\n",
+      "   ---------------------------------------- 0.0/345.4 kB ? eta -:--:--\n",
+      "   --------------------------------------  337.9/345.4 kB 21.8 MB/s eta 0:00:01\n",
+      "   ---------------------------------------- 345.4/345.4 kB 7.1 MB/s eta 0:00:00\n",
+      "Installing collected packages: tzdata, numpy, pandas\n",
+      "Successfully installed numpy-1.26.4 pandas-2.2.1 tzdata-2024.1\n"
+     ]
+    }
+   ],
+   "source": [
+    "!pip install pandas"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.12.2"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
